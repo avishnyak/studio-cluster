@@ -10,19 +10,22 @@ function BroadcastEmitter(instanceId, opt){
     this.id = instanceId;
     this.client = opt.client;
     this.rpcPort = opt.rpcPort;
-    this.multicastPort = opt.broadcastPort;
+    this.broadcastPort = opt.broadcastPort;
 }
 
 util.inherits(BroadcastEmitter,EventEmitter);
 
 BroadcastEmitter.prototype.send = function(action,info){
+    'use strict';
+
     var message = JSON.stringify({
         _publisherId:this.id,
         port : this.rpcPort,
         id : info,
         action : action
     });
-    this.client.send(message,0,message.length, this.multicastPort, BROADCAST_IP);
+
+    this.client.send(message,0,message.length, this.broadcastPort, BROADCAST_IP);
 };
 
 module.exports = function (rpcPort, opt) {

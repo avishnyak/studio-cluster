@@ -6,18 +6,13 @@ To run this test in several machines execute each of these command in a separate
     node subscriber-bill.js
 	node publisher.js
 
-The machines must be in a local network (you cant use aws vpc, because it dont support broadcast using the default transport check the [multiple_networks](https://github.com/ericholiveira/studio-cluster/tree/master/examples/multiple_networks) example to see how to do it).
+These services are configured to run on the same machine (or local network that supports Multicast).  The localhost
+publisher works together with the localhost transport to efficiently communicate between services on the same machine.
+They are made to work together (not compatible with other publisher/transports).
 
-If you dont have more than one machines, studio cluster also can make two different process communicate, all you have to do is to change 
-the rpcPort for one of the files, the code is already commented on index.js, open several tabs in a terminal, and execute, in each tab:
-
-	node index.js
-
-On the first run, it will execute the whole code in the same process, but as you keep adding new process it will distribute the work.
-
-For better readability the code uses generators, so if youre running on node < 4 , add the --harmony-generators flag
-
-	node --harmony-generators index.js
+The publisher creates an event to respond to a billedApi request.  The event is broadcast to multiple subscribers.  The
+api subscriber returns the number of shares that are owned.  The bill subscriber keep strack of how many requests are
+made and charges 0.05 for each request.
 
 The code is filled with console.log so you can see which process is handling which data.
 
