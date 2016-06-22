@@ -48,7 +48,7 @@ module.exports = function (rpcPort, opt, pluginOpt) {
         redisSubscriber = new Redis(opt);
         redisSender = new Redis(opt);
 
-        var instance = new StudioRedisEmitter({
+        var instance = new StudioRedisEmitter(instanceId, {
             sender:redisSender,
             subscriber:redisSubscriber,
             rpcPort:rpcPort
